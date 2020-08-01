@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, throwError} from 'rxjs';
 import { User } from './user.model';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 export interface AuthResponseData {
   kind: string;
@@ -17,7 +18,7 @@ export interface AuthResponseData {
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-  API_KEY = 'AIzaSyD_-3yXs3fkQM6VxYJobwL3M7cvL1w28Zw';
+  FIREBASE_API_KEY = environment.firebaseAPIKey;
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
@@ -26,7 +27,7 @@ export class AuthService {
 
   signUp(email: string, password: string) {
     return this.http.
-      post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.API_KEY,
+      post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.FIREBASE_API_KEY,
       { email,
               password,
               returnSecureToken: true
@@ -41,7 +42,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.
-    post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + this.API_KEY,
+    post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + this.FIREBASE_API_KEY,
       { email,
         password,
         returnSecureToken: true
